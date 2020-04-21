@@ -7,6 +7,8 @@
 @inject NorthwindContext dbContext
 
 <RadzenExample Name="Tabs">
+        <RadzenButton Text="Hide Tab" Click="@Button0Click">
+        </RadzenButton>
     <RadzenTabs>
         <Tabs>
             <RadzenTabsItem Text="Orders">
@@ -38,7 +40,7 @@
                     </Template>
                 </RadzenDataList>
             </RadzenTabsItem>
-            <RadzenTabsItem Text="Employee">
+            <RadzenTabsItem Text="Employee"  Visible="@(!this.HideTab)">
                 <RadzenGrid AllowFiltering="true" AllowPaging="true" PageSize="4" AllowSorting="true" Data="@employees" TItem="Employee">
                     <Columns>
                         <RadzenGridColumn TItem="Employee" Property="EmployeeID" Title="Employee ID" />
@@ -96,6 +98,7 @@
     IEnumerable<Order> orders;
     IEnumerable<Employee> employees;
     IEnumerable<Customer> customers;
+    bool HideTab = false;
 
     protected override void OnInitialized()
     {
@@ -104,5 +107,9 @@
         customers = dbContext.Customers.ToList();
 
         orders = dbContext.Orders.Include("Customer").Include("Employee").ToList();
+    }
+    protected async System.Threading.Tasks.Task Button0Click(MouseEventArgs args)
+    {
+        HideTab = !this.HideTab;
     }
 }
