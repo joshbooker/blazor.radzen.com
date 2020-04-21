@@ -7,6 +7,8 @@
 @inject NorthwindContext dbContext
 
 <RadzenExample Name="DataGrid">
+    <RadzenButton Text="Set Width" Click="@Button0Click">
+    </RadzenButton>
     <RadzenGrid AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowPaging="true" PageSize="4"
                 AllowSorting="true" Data="@employees" TItem="Employee" ColumnWidth="200px">
         <Columns>
@@ -16,7 +18,7 @@
                     <RadzenImage Path="@data?.Photo" />
                 </Template>
             </RadzenGridColumn>
-            <RadzenGridColumn TItem="Employee" Property="LastName" Title="Last Name" />
+            <RadzenGridColumn TItem="Employee" Property="LastName" Title="Last Name" Width="@(ColWidth)" />
             <RadzenGridColumn TItem="Employee" Property="FirstName" Title="First Name" />
             <RadzenGridColumn TItem="Employee" Property="Title" Title="Title" />
             <RadzenGridColumn TItem="Employee" Property="TitleOfCourtesy" Title="Title Of Courtesy" />
@@ -43,7 +45,11 @@
 </RadzenExample>
 @code {
     IEnumerable<Employee> employees;
-
+    string ColWidth = "200px";
+    protected async System.Threading.Tasks.Task Button0Click(MouseEventArgs args)
+    {
+        ColWidth = (ColWidth == "200px" ? "100px" :  "200px");
+    }
     protected override void OnInitialized()
     {
         employees = dbContext.Employees.ToList();
